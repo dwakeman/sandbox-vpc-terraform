@@ -84,7 +84,7 @@ resource "ibm_container_vpc_cluster" "app_cluster" {
     kube_version      = "1.17"
     worker_count      = "1"
     resource_group_id = data.ibm_resource_group.env_resource_group.id
-    tags              = ["environment:${var.environment}","schematics:${schematics_workspace_name}"]
+    tags              = ["env:${var.environment}","schematics:${schematics_workspace_name}"]
     zones {
         subnet_id = module.app_subnets.subnet1_id
         name      = "${var.region}-1"
