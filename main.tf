@@ -52,7 +52,7 @@ module "adm_subnets" {
     resource_group     = data.ibm_resource_group.adm_resource_group.id
     region             = var.region
     subnet_name_prefix = "${var.vpc_name}-adm"
-    network_acl        = module.vpc.network_acl_id
+#    network_acl        = module.vpc.network_acl_id
     subnet_cidr_blocks = ["${var.adm_cidr_block_1}", "${var.adm_cidr_block_2}", "${var.adm_cidr_block_3}"]
     public_gateways    = [module.public_gateways.zone1_gateway_id, module.public_gateways.zone2_gateway_id, module.public_gateways.zone3_gateway_id]
 
@@ -68,7 +68,7 @@ module "app_subnets" {
     resource_group     = data.ibm_resource_group.env_resource_group.id
     region             = var.region
     subnet_name_prefix = "${var.vpc_name}-app"
-    network_acl        = module.vpc.network_acl_id
+#    network_acl        = module.vpc.network_acl_id
     subnet_cidr_blocks = ["${var.app_cidr_block_1}", "${var.app_cidr_block_2}", "${var.app_cidr_block_3}"]
     public_gateways    = [module.public_gateways.zone1_gateway_id, module.public_gateways.zone2_gateway_id, module.public_gateways.zone3_gateway_id]
 
