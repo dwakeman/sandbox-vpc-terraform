@@ -74,12 +74,12 @@ module "app_subnets" {
 
 }
 
-/*
+
 ##############################################################################
 # Create OpenShift Cluster
 ##############################################################################
 resource "ibm_container_vpc_cluster" "app_cluster" {
-    name              = "${var.environment}-ocp-02"
+    name              = "${var.environment}-ocp-01"
     vpc_id            = module.vpc.vpc_id
     flavor            = "bx2.4x16"
     kube_version      = "4.3_openshift"
@@ -101,7 +101,7 @@ resource "ibm_container_vpc_cluster" "app_cluster" {
         name      = "${var.region}-3"
     }
 }
-*/
+
 
 output vpc_id {
  value = module.vpc.vpc_id
