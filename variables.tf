@@ -1,5 +1,10 @@
 variable "schematics_workspace_name" {
     description = "the name of the schematics workspace.  Used to create a tag"
+    default = "not-using-schematics"
+}
+
+variable "environment" {
+    default = "sandbox"
 }
 
 variable "vpc_name" {

@@ -17,7 +17,7 @@ data "ibm_resource_group" "env_resource_group" {
 ##############################################################################
 module "vpc" {
 
-    source = "github.com/dwakeman/ibmcloud-terraform-modules.git//modules/vpc?ref=v0.1.0-alpha"
+    source = "github.com/dwakeman/ibmcloud-terraform-modules.git//modules/vpc"
     
     vpc_name                   = var.vpc_name
     region                     = var.region
@@ -75,16 +75,18 @@ module "app_subnets" {
 }
 
 ##############################################################################
-# Create IKS Cluster
+# Create OpenShift Cluster
 ##############################################################################
 resource "ibm_container_vpc_cluster" "app_cluster" {
-    name              = "${var.environment}-iks-01"
+    name              = "${var.environment}-ocp-02"
     vpc_id            = module.vpc.vpc_id
     flavor            = "bx2.4x16"
-    kube_version      = "1.17"
+    kube_version      = "4.3_openshift"
     worker_count      = "1"
+    wait_till         = "MasterNodeReady"
+    disable_public_service_endpoint = true
     resource_group_id = data.ibm_resource_group.env_resource_group.id
-    tags              = ["env:${var.environment}","schematics:${schematics_workspace_name}"]
+    tags              = ["env:${var.environment}","schematics:${var.schematics_workspace_name}"]
     zones {
         subnet_id = module.app_subnets.subnet1_id
         name      = "${var.region}-1"
@@ -98,6 +100,7 @@ resource "ibm_container_vpc_cluster" "app_cluster" {
         name      = "${var.region}-3"
     }
 }
+
 
 output vpc_id {
  value = module.vpc.vpc_id
