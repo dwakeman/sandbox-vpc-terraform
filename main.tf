@@ -46,7 +46,7 @@ module "public_gateways" {
 # Create Admin Subnets
 ##############################################################################
 module "adm_subnets" {
-    source = "github.com/dwakeman/ibmcloud-terraform-modules.git//modules/subnets?ref=v0.1.0-alpha"
+    source = "github.com/dwakeman/ibmcloud-terraform-modules.git//modules/subnets"
 
     vpc_id             = module.vpc.vpc_id
     resource_group     = data.ibm_resource_group.adm_resource_group.id
@@ -62,7 +62,7 @@ module "adm_subnets" {
 # Create Application Subnets
 ##############################################################################
 module "app_subnets" {
-    source = "github.com/dwakeman/ibmcloud-terraform-modules.git//modules/subnets?ref=v0.1.0-alpha"
+    source = "github.com/dwakeman/ibmcloud-terraform-modules.git//modules/subnets"
 
     vpc_id             = module.vpc.vpc_id
     resource_group     = data.ibm_resource_group.env_resource_group.id
