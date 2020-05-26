@@ -74,6 +74,7 @@ module "app_subnets" {
 
 }
 
+/*
 ##############################################################################
 # Create OpenShift Cluster
 ##############################################################################
@@ -100,7 +101,7 @@ resource "ibm_container_vpc_cluster" "app_cluster" {
         name      = "${var.region}-3"
     }
 }
-
+*/
 
 output vpc_id {
  value = module.vpc.vpc_id
