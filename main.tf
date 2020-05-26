@@ -17,7 +17,7 @@ data "ibm_resource_group" "env_resource_group" {
 ##############################################################################
 module "vpc" {
 
-    source = "github.com/dwakeman/ibmcloud-terraform-modules.git//modules/vpc"
+    source = "github.com/dwakeman/ibmcloud-terraform-modules.git//modules/vpc?ref=v0.1.1-alpha"
     
     vpc_name                   = var.vpc_name
     region                     = var.region
@@ -33,7 +33,7 @@ module "vpc" {
 # Create Public Gateways
 ##############################################################################
 module "public_gateways" {
-    source = "github.com/dwakeman/ibmcloud-terraform-modules.git//modules/public_gateways?ref=v0.1.0-alpha"
+    source = "github.com/dwakeman/ibmcloud-terraform-modules.git//modules/public_gateways?ref=v0.1.1-alpha"
 
     vpc_resource_group = var.vpc_resource_group
     vpc_id             = module.vpc.vpc_id
@@ -46,7 +46,7 @@ module "public_gateways" {
 # Create Admin Subnets
 ##############################################################################
 module "adm_subnets" {
-    source = "github.com/dwakeman/ibmcloud-terraform-modules.git//modules/subnets"
+    source = "github.com/dwakeman/ibmcloud-terraform-modules.git//modules/subnets?ref=v0.1.1-alpha"
 
     vpc_id             = module.vpc.vpc_id
     resource_group     = data.ibm_resource_group.adm_resource_group.id
@@ -62,7 +62,7 @@ module "adm_subnets" {
 # Create Application Subnets
 ##############################################################################
 module "app_subnets" {
-    source = "github.com/dwakeman/ibmcloud-terraform-modules.git//modules/subnets"
+    source = "github.com/dwakeman/ibmcloud-terraform-modules.git//modules/subnets?ref=v0.1.1-alpha"
 
     vpc_id             = module.vpc.vpc_id
     resource_group     = data.ibm_resource_group.env_resource_group.id
