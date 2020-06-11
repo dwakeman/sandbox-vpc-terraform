@@ -101,6 +101,37 @@ resource "ibm_container_vpc_cluster" "app_cluster" {
         name      = "${var.region}-3"
     }
 }
+
+##############################################################################
+# Create OCP Cluster
+##############################################################################
+resource "ibm_container_vpc_cluster" "app_cluster" {
+    name              = "${var.environment}-ocp-02"
+    vpc_id            = module.vpc.vpc_id
+    flavor            = "bx2.4x16"
+    kube_version      = "4.3_openshift"
+    worker_count      = "2"
+    wait_till         = "MasterNodeReady"
+    disable_public_service_endpoint = false
+    entitlement       = "cloud_pak"
+    resource_group_id = data.ibm_resource_group.env_resource_group.id
+    tags              = ["env:${var.environment}","vpc:${var.vpc_name}","schematics:${var.schematics_workspace_name}"]
+    zones {
+        subnet_id = module.app_subnets.subnet1_id
+        name      = "${var.region}-1"
+    }
+/*
+    zones {
+        subnet_id = module.app_subnets.subnet2_id
+        name      = "${var.region}-2"
+    }
+    zones {
+        subnet_id = module.app_subnets.subnet3_id
+        name      = "${var.region}-3"
+    }
+*/
+}
+
 /*
 ##############################################################################
 # Create IKS Cluster
