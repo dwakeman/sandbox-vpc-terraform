@@ -52,7 +52,6 @@ module "adm_subnets" {
     resource_group     = data.ibm_resource_group.adm_resource_group.id
     region             = var.region
     subnet_name_prefix = "${var.vpc_name}-adm"
-#    network_acl        = module.vpc.network_acl_id
     subnet_cidr_blocks = ["${var.adm_cidr_block_1}", "${var.adm_cidr_block_2}", "${var.adm_cidr_block_3}"]
     public_gateways    = [module.public_gateways.zone1_gateway_id, module.public_gateways.zone2_gateway_id, module.public_gateways.zone3_gateway_id]
 
@@ -68,26 +67,26 @@ module "app_subnets" {
     resource_group     = data.ibm_resource_group.env_resource_group.id
     region             = var.region
     subnet_name_prefix = "${var.vpc_name}-app"
-#    network_acl        = module.vpc.network_acl_id
     subnet_cidr_blocks = ["${var.app_cidr_block_1}", "${var.app_cidr_block_2}", "${var.app_cidr_block_3}"]
     public_gateways    = [module.public_gateways.zone1_gateway_id, module.public_gateways.zone2_gateway_id, module.public_gateways.zone3_gateway_id]
 
 }
 
-
+/*
 ##############################################################################
 # Create IKS Cluster
 ##############################################################################
 resource "ibm_container_vpc_cluster" "app_cluster" {
-    name              = "${var.environment}-iks-01"
-    vpc_id            = module.vpc.vpc_id
-    flavor            = "bx2.4x16"
-    kube_version      = "1.17"
-    worker_count      = "1"
-    wait_till         = "MasterNodeReady"
+    name                            = "${var.environment}-iks-01"
+    vpc_id                          = module.vpc.vpc_id
+    flavor                          = "bx2.4x16"
+    kube_version                    = "1.17"
+    worker_count                    = "1"
+    wait_till                       = "MasterNodeReady"
     disable_public_service_endpoint = false
-    resource_group_id = data.ibm_resource_group.env_resource_group.id
-    tags              = ["env:${var.environment}","vpc:${var.vpc_name}","schematics:${var.schematics_workspace_name}"]
+    resource_group_id               = data.ibm_resource_group.env_resource_group.id
+    tags                            = ["env:${var.environment}","vpc:${var.vpc_name}","schematics:${var.schematics_workspace_name}"]
+
     zones {
         subnet_id = module.app_subnets.subnet1_id
         name      = "${var.region}-1"
@@ -101,65 +100,41 @@ resource "ibm_container_vpc_cluster" "app_cluster" {
         name      = "${var.region}-3"
     }
 }
+*/
 
+/*
 ##############################################################################
 # Create OCP Cluster
 ##############################################################################
-resource "ibm_container_vpc_cluster" "app_cluster" {
-    name              = "${var.environment}-ocp-02"
-    vpc_id            = module.vpc.vpc_id
-    flavor            = "bx2.4x16"
-    kube_version      = "4.3_openshift"
-    worker_count      = "2"
-    wait_till         = "MasterNodeReady"
+resource "ibm_container_vpc_cluster" "app_ocp_cluster-01" {
+    name                            = "${var.environment}-ocp-01"
+    vpc_id                          = module.vpc.vpc_id
+    flavor                          = "bx2.4x16"
+    kube_version                    = "4.3_openshift"
+    worker_count                    = "2"
+    wait_till                       = "MasterNodeReady"
     disable_public_service_endpoint = false
-    entitlement       = "cloud_pak"
-    resource_group_id = data.ibm_resource_group.env_resource_group.id
-    tags              = ["env:${var.environment}","vpc:${var.vpc_name}","schematics:${var.schematics_workspace_name}"]
-    zones {
-        subnet_id = module.app_subnets.subnet1_id
-        name      = "${var.region}-1"
-    }
-/*
-    zones {
-        subnet_id = module.app_subnets.subnet2_id
-        name      = "${var.region}-2"
-    }
-    zones {
-        subnet_id = module.app_subnets.subnet3_id
-        name      = "${var.region}-3"
-    }
-*/
-}
+    entitlement                     = "cloud_pak"
+    resource_group_id               = data.ibm_resource_group.env_resource_group.id
+    tags                            = ["env:${var.environment}","vpc:${var.vpc_name}","schematics:${var.schematics_workspace_name}"]
 
-/*
-##############################################################################
-# Create IKS Cluster
-##############################################################################
-resource "ibm_container_vpc_cluster" "app_cluster2" {
-    name              = "${var.environment}-iks-pvt-01"
-    vpc_id            = module.vpc.vpc_id
-    flavor            = "bx2.4x16"
-    kube_version      = "1.17"
-    worker_count      = "1"
-    wait_till         = "MasterNodeReady"
-    disable_public_service_endpoint = true
-    resource_group_id = data.ibm_resource_group.env_resource_group.id
-    tags              = ["env:${var.environment}","vpc:${var.vpc_name}","schematics:${var.schematics_workspace_name}"]
     zones {
         subnet_id = module.app_subnets.subnet1_id
         name      = "${var.region}-1"
     }
+
     zones {
         subnet_id = module.app_subnets.subnet2_id
         name      = "${var.region}-2"
     }
-    zones {
-        subnet_id = module.app_subnets.subnet3_id
-        name      = "${var.region}-3"
-    }
+#    zones {
+#        subnet_id = module.app_subnets.subnet3_id
+#        name      = "${var.region}-3"
+#    }
+
 }
 */
+
 
 output vpc_id {
  value = module.vpc.vpc_id
